@@ -1,0 +1,170 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin",
+      "email": "admin@example.com",
+      "role": "admin",
+      "favorites": [
+        "1",
+        "2",
+        "recipe-1746431899775"
+      ]
+    },
+    {
+      "id": "2",
+      "username": "user",
+      "password": "user",
+      "email": "user@example.com",
+      "role": "user",
+      "favorites": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "3",
+      "username": "premium",
+      "password": "premium",
+      "email": "premium@example.com",
+      "role": "premium",
+      "favorites": [
+        "1",
+        "recipe-1746431899775",
+        "recipe-1746437384612"
+      ]
+    }
+  ],
+  "recipes": [
+    {
+      "id": "1",
+      "title": "Spaghetti Bolognese",
+      "description": "Ein klassisches Gericht.",
+      "category": "Hauptgericht",
+      "ingredients": [
+        "Spaghetti",
+        "Hackfleisch",
+        "Tomaten"
+      ],
+      "instructions": [
+        "Spaghetti nach Packungsanweisung kochen.",
+        "Hackfleisch anbraten.",
+        "Tomatensauce hinzufügen und köcheln lassen.",
+        "Alles zusammen servieren."
+      ],
+      "time": 30,
+      "rating": 4.5,
+      "image": "",
+      "nutrition": {
+        "calories": 650,
+        "protein": 25,
+        "fat": 20
+      }
+    },
+    {
+      "id": "2",
+      "title": "Pfannkuchen",
+      "description": "Lecker und schnell gemacht.",
+      "category": "Frühstück",
+      "ingredients": [
+        "Mehl",
+        "Eier",
+        "Milch"
+      ],
+      "instructions": [
+        "Mehl, Eier und Milch zu einem glatten Teig verrühren.",
+        "In einer Pfanne mit Butter ausbacken.",
+        "Warm servieren."
+      ],
+      "time": 15,
+      "rating": 5,
+      "image": "",
+      "nutrition": {
+        "calories": 350,
+        "protein": 10,
+        "fat": 12
+      }
+    },
+    {
+      "id": "recipe-1746431899775",
+      "title": "a",
+      "description": "b",
+      "category": "Snacks",
+      "ingredients": [
+        "c"
+      ],
+      "instructions": [
+        "d"
+      ],
+      "time": 5,
+      "rating": 0,
+      "image": "",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "fat": 0
+      }
+    },
+    {
+      "id": "recipe-1746437384612",
+      "title": "b",
+      "description": "c",
+      "category": "Dessert",
+      "ingredients": [
+        "d"
+      ],
+      "instructions": [
+        "e"
+      ],
+      "time": 10,
+      "rating": 0,
+      "image": "",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "fat": 0
+      }
+    },
+    {
+      "id": "recipe-1746478426099",
+      "title": "bbb",
+      "description": "bbb",
+      "category": "Vorspeise",
+      "ingredients": [
+        "bbb"
+      ],
+      "instructions": [
+        "bbb"
+      ],
+      "time": 15,
+      "rating": 0,
+      "image": "",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "fat": 0
+      }
+    },
+    {
+      "id": "recipe-1746483714104",
+      "title": "aaa",
+      "description": "aaaa",
+      "category": "Getränk",
+      "ingredients": [
+        "aaa"
+      ],
+      "instructions": [
+        "aaa"
+      ],
+      "time": 5,
+      "rating": 0,
+      "image": "",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "fat": 0
+      }
+    }
+  ]
+}
