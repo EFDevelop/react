@@ -1,8 +1,8 @@
-// src/views/Favoriten.tsx
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Favoriten() {
+export default function Favorites() {
   // Dummy-Daten für Favoriten (diese könnten aus einer API oder einem globalen State kommen)
   const favorites = [
     { id: 1, title: 'Pasta Carbonara', description: 'Ein klassisches italienisches Rezept' },
