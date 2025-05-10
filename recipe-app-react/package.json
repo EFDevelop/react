@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+<<<<<<< HEAD
     "preview": "vite preview"
+=======
+    "preview": "vite preview",
+    "serve:api": "json-server --watch db.json --port 3001"
+>>>>>>> e6a4e08 (Create Recipe created)
   },
   "dependencies": {
     "lucide-react": "^0.509.0",

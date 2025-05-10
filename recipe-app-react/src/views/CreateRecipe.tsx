@@ -1,108 +1,108 @@
-// src/views/CreateRecipe.tsx
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createRecipe, Recipe } from '../api/dataApi';
 
 export default function CreateRecipe() {
-  const [recipe, setRecipe] = useState({
-    title: '',
-    ingredients: '',
-    instructions: '',
-    image: null as File | null,
-  })
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [ingredients, setIngredients] = useState('');      // comma-separated
+  const [instructions, setInstructions] = useState('');    // comma-separated
+  const [time, setTime] = useState(0);
+  const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setRecipe({ ...recipe, [name]: value })
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setRecipe({ ...recipe, image: e.target.files[0] })
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newRecipe: Recipe = {
+      title,
+      description,
+      category,
+      ingredients: ingredients.split(',').map(s => s.trim()),
+      instructions: instructions.split(',').map(s => s.trim()),
+      time,
+      rating: 0,
+      nutrition: { calories: 0, protein: 0, fat: 0 }
+    };
+    try {
+      await createRecipe(newRecipe);
+      navigate('/recipes');
+    } catch (err) {
+      console.error(err);
+      alert('Fehler beim Erstellen des Rezepts');
     }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Rezept speichern (hier kannst du API-Aufrufe hinzufügen)
-    console.log(recipe)
-  }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Rezept erstellen</h1>
-
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+      <h1 className="text-3xl font-bold mb-6">Rezept erstellen</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Titel */}
         <div>
-          <label htmlFor="title" className="block text-lg font-medium text-gray-700">
-            Titel
-          </label>
+          <label className="block text-sm font-medium">Titel</label>
           <input
-            id="title"
-            name="title"
-            type="text"
-            required
-            value={recipe.title}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            type="text" required
+            value={title} onChange={e => setTitle(e.target.value)}
+            className="mt-1 block w-full border rounded-md px-3 py-2"
           />
         </div>
-
+        {/* Beschreibung */}
+        <div>
+          <label className="block text-sm font-medium">Beschreibung</label>
+          <textarea
+            required value={description}
+            onChange={e => setDescription(e.target.value)}
+            className="mt-1 block w-full border rounded-md px-3 py-2"
+          />
+        </div>
+        {/* Kategorie */}
+        <div>
+          <label className="block text-sm font-medium">Kategorie</label>
+          <input
+            type="text" required
+            value={category} onChange={e => setCategory(e.target.value)}
+            className="mt-1 block w-full border rounded-md px-3 py-2"
+          />
+        </div>
         {/* Zutaten */}
         <div>
-          <label htmlFor="ingredients" className="block text-lg font-medium text-gray-700">
-            Zutaten
-          </label>
-          <textarea
-            id="ingredients"
-            name="ingredients"
-            rows={4}
-            required
-            value={recipe.ingredients}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-          />
-        </div>
-
-        {/* Anweisungen */}
-        <div>
-          <label htmlFor="instructions" className="block text-lg font-medium text-gray-700">
-            Anweisungen
-          </label>
-          <textarea
-            id="instructions"
-            name="instructions"
-            rows={4}
-            required
-            value={recipe.instructions}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-          />
-        </div>
-
-        {/* Bild Upload */}
-        <div>
-          <label htmlFor="image" className="block text-lg font-medium text-gray-700">
-            Bild hochladen
+          <label className="block text-sm font-medium">
+            Zutaten (Komma-getrennt)
           </label>
           <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleImageChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            type="text" required
+            value={ingredients} onChange={e => setIngredients(e.target.value)}
+            className="mt-1 block w-full border rounded-md px-3 py-2"
+          />
+        </div>
+        {/* Anweisungen */}
+        <div>
+          <label className="block text-sm font-medium">
+            Anweisungen (Komma-getrennt)
+          </label>
+          <input
+            type="text" required
+            value={instructions} onChange={e => setInstructions(e.target.value)}
+            className="mt-1 block w-full border rounded-md px-3 py-2"
+          />
+        </div>
+        {/* Zeit */}
+        <div>
+          <label className="block text-sm font-medium">Zubereitungszeit (Min.)</label>
+          <input
+            type="number" required
+            value={time} onChange={e => setTime(Number(e.target.value))}
+            className="mt-1 block w-32 border rounded-md px-3 py-2"
           />
         </div>
 
-        {/* Submit Button */}
-        <div>
-          <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            Rezept erstellen
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="inline-block bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700"
+        >
+          Erstellen
+        </button>
       </form>
     </div>
-  )
+  );
+
 }
