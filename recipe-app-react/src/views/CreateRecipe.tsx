@@ -104,5 +104,4 @@ export default function CreateRecipe() {
       </form>
     </div>
   );
-
 }
