@@ -1,6 +1,6 @@
 // src/pages/FavoritesPage.tsx
 import React, { useEffect, useState } from 'react';
-import { getFavoritesByUserId } from '../api/dataApi';
+import { getFavoriteRecipes } from '../api/dataApi';
 import Favorites from '../components/Favorites';
 import { Recipe } from '../types/Recipe'; // Importiere den Typ für Rezepte
 
@@ -15,7 +15,7 @@ const FavoritesPage = () => {
       console.log('Abruf der Favoriten für Benutzer mit ID:', userId); // Log beim Start des Abrufs
 
       try {
-        const data = await getFavoritesByUserId(userId);
+        const data = await getFavoriteRecipes(userId);
         console.log('Erhaltene Favoriten:', data); // Log für die erhaltenen Daten
         setFavorites(data); // Sicherstellen, dass data der richtige Typ ist
       } catch (error) {

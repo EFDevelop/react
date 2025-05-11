@@ -1,30 +1,32 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUsers } from '../api/dataApi';
+import { useAuth } from '../context/AuthContext';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage('');
+
     try {
-      const users = await getUsers();
-      const user = users.find(
-        (user: any) => user.username === username && user.password === password
-      );
-      if (user) {
-        // Erfolg: Benutzerdaten speichern (z.B. in localStorage oder Context API)
-        alert(`Willkommen, ${user.username}`);
-        navigate('/dashboard'); // Weiterleitung nach erfolgreichem Login
+      const success = await login(username, password);
+      if (success) {
+        navigate('/dashboard');
       } else {
-        setErrorMessage('Falscher Benutzername oder Passwort');
+        setErrorMessage('Ungültiger Benutzername oder Passwort');
       }
     } catch (error) {
-      console.error(error);
-      setErrorMessage('Fehler bei der Anmeldung');
+      console.error('Login error:', error);
+      setErrorMessage('Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -47,8 +49,10 @@ const Login: React.FC = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Benutzername"
+              disabled={isLoading}
+              required
             />
           </div>
 
@@ -59,22 +63,25 @@ const Login: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Passwort"
+              disabled={isLoading}
+              required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-400"
+            disabled={isLoading}
           >
-            Anmelden
+            {isLoading ? 'Anmelden...' : 'Anmelden'}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-600">
           Noch kein Konto?{' '}
-          <a href="/signup" className="text-indigo-600 hover:text-indigo-800">
+          <a href="/signup" className="text-green-600 hover:text-green-800">
             Registrieren
           </a>
         </p>
