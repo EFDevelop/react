@@ -1,31 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createRecipe, Recipe } from '../api/dataApi';
+import { createRecipe } from '../api/dataApi';
+import { Recipe } from '../types/Recipe';
+import { v4 as uuidv4 } from 'uuid'; // Importiere UUID
 
 export default function CreateRecipe() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
-  const [ingredients, setIngredients] = useState('');      // comma-separated
-  const [instructions, setInstructions] = useState('');    // comma-separated
+  const [ingredients, setIngredients] = useState(''); // comma-separated
+  const [instructions, setInstructions] = useState(''); // comma-separated
   const [time, setTime] = useState(0);
+  const [image, setImage] = useState(''); // Für das Bild
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Generiere eine neue ID für das Rezept
+    const id = uuidv4(); 
+
     const newRecipe: Recipe = {
+      id, // Die generierte ID
       title,
       description,
       category,
       ingredients: ingredients.split(',').map(s => s.trim()),
-      instructions: instructions.split(',').map(s => s.trim()),
+      steps: instructions.split(',').map(s => s.trim()),
       time,
+      image, // Das Bild wird hier verwendet
       rating: 0,
       nutrition: { calories: 0, protein: 0, fat: 0 }
     };
+
     try {
-      await createRecipe(newRecipe);
-      navigate('/recipes');
+      await createRecipe(newRecipe); // Rezept erstellen
+      navigate('/recipes'); // Weiterleitung zur Rezeptübersicht
     } catch (err) {
       console.error(err);
       alert('Fehler beim Erstellen des Rezepts');
@@ -92,6 +102,15 @@ export default function CreateRecipe() {
             type="number" required
             value={time} onChange={e => setTime(Number(e.target.value))}
             className="mt-1 block w-32 border rounded-md px-3 py-2"
+          />
+        </div>
+        {/* Bild */}
+        <div>
+          <label className="block text-sm font-medium">Bild-URL</label>
+          <input
+            type="text" required
+            value={image} onChange={e => setImage(e.target.value)}
+            className="mt-1 block w-full border rounded-md px-3 py-2"
           />
         </div>
 

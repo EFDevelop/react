@@ -6,7 +6,8 @@ import Layout from './components/Layout'
 import Home from './views/Login'
 import Recipes from './views/Recipes'
 import RecipeDetail from './views/RecipeDetail'
-import Favorites from './views/Favorites';
+import FavoritesPage from './views/FavoritesPage';
+
 import Dashboard from './views/Dashboard';
 import CreateRecipe from './views/CreateRecipe';
 import { LogIn } from 'lucide-react'
@@ -19,7 +20,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/recipe/:id" element={<RecipeDetail />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create-recipe" element={<CreateRecipe />} />
         {/* z.B. 404-Route */}

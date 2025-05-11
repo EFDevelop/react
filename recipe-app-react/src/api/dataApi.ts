@@ -1,16 +1,9 @@
+import { Recipe } from "../types/Recipe";
+import {User} from "../types/User"
+
 const BASE_URL = 'http://localhost:3001';
 
-export interface Recipe {
-  id?: number;
-  title: string;
-  description: string;
-  category: string;
-  ingredients: string[];
-  instructions: string[];
-  time: number;
-  rating?: number;
-  nutrition?: { calories: number; protein: number; fat: number; };
-}
+
 
 //  GET /recipes
 export async function getRecipes(): Promise<Recipe[]> {
@@ -32,7 +25,7 @@ export async function createRecipe(recipe: Recipe): Promise<Recipe> {
 
 
 
-export const getUsers = async () => {
+export const getUsers = async (): Promise<User[]> => {
   const response = await fetch('/db.json');
   if (response.ok) {
     const data = await response.json();
@@ -41,18 +34,18 @@ export const getUsers = async () => {
   throw new Error('Fehler beim Laden der Benutzer');
 };
 
-
 export const getUserById = async (userId: string) => {
   const users = await getUsers();
   return users.find((user: any) => user.id === userId);
 };
 
-export const getFavoritesByUserId = async (userId: string) => {
-  const user = await getUserById(userId);
-  const recipes = await getRecipes();
-  return recipes.filter((recipe: any) => user.favorites.includes(recipe.id));
+export const getFavoritesByUserId = async (userId: string): Promise<Recipe[]> => {
+  const response = await fetch(`${BASE_URL}/favorites/${userId}`);
+  if (!response.ok) {
+    throw new Error('Favoriten konnten nicht geladen werden');
+  }
+  return await response.json();
 };
-
 export const addRecipe = async (newRecipe: any) => {
   const recipes = await getRecipes();
   recipes.push(newRecipe);

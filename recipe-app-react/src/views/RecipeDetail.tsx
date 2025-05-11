@@ -1,37 +1,41 @@
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Recipe } from '../types/Recipe';
+import { Recipe } from '../types/Recipe'; // Stelle sicher, dass deine `Recipe`-Typdefinition korrekt ist
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); // Für Ladeanzeige
 
   useEffect(() => {
-    // Simuliere API-Aufruf (später durch echten Replace ersetzen)
     const fetchRecipe = async () => {
-      const exampleData: Recipe[] = [
-        {
-          id: '1',
-          title: 'Spaghetti Bolognese',
-          description: 'Ein klassisches italienisches Rezept mit Tomaten und Hackfleisch.',
-          ingredients: ['400g Spaghetti', '250g Rinderhack', '1 Dose Tomaten', '1 Zwiebel', 'Knoblauch', 'Salz', 'Pfeffer'],
-          steps: [
-            'Zwiebel und Knoblauch fein hacken.',
-            'Hackfleisch anbraten, dann Zwiebel/Knoblauch dazugeben.',
-            'Tomaten hinzufügen und 15 Minuten köcheln lassen.',
-            'Mit Salz und Pfeffer abschmecken.',
-            'Spaghetti kochen und mit der Soße servieren.'
-          ],
-          image: 'https://via.placeholder.com/600x400'
+      try {
+        // Ersetze diesen Code später mit einem echten API-Aufruf
+        const response = await fetch(`/api/recipes/${id}`);
+        if (!response.ok) {
+          throw new Error('Rezept nicht gefunden');
         }
-      ];
 
-      const found = exampleData.find(r => r.id === id);
-      setRecipe(found ?? null);
+        const data: Recipe = await response.json();
+        setRecipe(data);
+      } catch (error) {
+        console.error('Fehler beim Laden des Rezepts:', error);
+        setRecipe(null); // Rezept auf null setzen bei Fehler
+      } finally {
+        setLoading(false); // Ladezustand zurücksetzen
+      }
     };
 
     fetchRecipe();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="p-6 text-center text-gray-600">
+        <p>Lade Rezept...</p>
+      </div>
+    );
+  }
 
   if (!recipe) {
     return (
